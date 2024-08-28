@@ -5,8 +5,8 @@ import { Fira_Code } from 'next/font/google'
 
 const firaCode = Fira_Code({ subsets: ['latin'] })
 
-// Updated ASCII art for the home section
-const asciiArt = `
+// Updated ASCII art for larger screens
+const largeScreenAsciiArt = `
  ┌───────────────────────────────────────────────────┐
  │   _____        __ _                               │
  │  / ____|      / _| |                              │
@@ -19,6 +19,14 @@ const asciiArt = `
  └───────────────────────────────────────────────────┘
 `
 
+// Simplified ASCII art for mobile screens
+const smallScreenAsciiArt = `
+┌─────────────┐
+│  Software   │
+│  Engineer   │
+└─────────────┘
+`
+
 export default function Portfolio() {
   const [currentSection, setCurrentSection] = useState<string>('home')
   const [typedContent, setTypedContent] = useState('')
@@ -28,7 +36,11 @@ export default function Portfolio() {
   const contentRef = useRef<HTMLPreElement>(null)
 
   const content = useMemo(() => ({
-    home: `${asciiArt}
+    home: `
+<div class="ascii-art-container">
+  <div class="large-screen-ascii">${largeScreenAsciiArt}</div>
+  <div class="small-screen-ascii">${smallScreenAsciiArt}</div>
+</div>
 
 Hi, I'm Stanley Mwendwa!
 Welcome to my Software Engineering Portfolio
@@ -226,6 +238,26 @@ Hint: Try exploring each section to learn more about Stanley's portfolio.
 
   return (
     <div className={`min-h-screen bg-black text-green-500 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 ${firaCode.className}`}>
+      <style jsx>{`
+        .ascii-art-container {
+          display: flex;
+          justify-content: center;
+        }
+        .large-screen-ascii {
+          display: none;
+        }
+        .small-screen-ascii {
+          display: block;
+        }
+        @media (min-width: 640px) {
+          .large-screen-ascii {
+            display: block;
+          }
+          .small-screen-ascii {
+            display: none;
+          }
+        }
+      `}</style>
       <pre
         ref={contentRef}
         className="whitespace-pre-wrap mb-4 max-h-[80vh] overflow-y-auto"
