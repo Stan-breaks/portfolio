@@ -22,8 +22,8 @@ const largeScreenAsciiArt = `
 // Simplified ASCII art for mobile screens
 const smallScreenAsciiArt = `
 ┌─────────────┐
-│  Software    │
-│  Engineer    │
+│  Software     │
+│  Engineer     │
 └─────────────┘
 `
 
