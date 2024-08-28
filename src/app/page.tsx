@@ -116,7 +116,7 @@ Customization:
    - Includes custom new tab page and animated hover effects
    - GitHub: <a href="https://github.com/Stan-breaks/Tokyo-night-Fox" target="_blank" rel="noopener noreferrer">github.com/Stan-breaks/Tokyo-night-Fox</a>
 
-Hint: Type 'skills' to see my technical skills or 'contact' for contact information.
+Hint: Type 'resume' to view my resume.
   `,
     contact: `
 Contact Information
@@ -140,7 +140,7 @@ Download: <a href="https://drive.google.com/file/d/1PmcFf7lMuymixuATfSLhKoM-ysEK
 
 Note: The resume is in PDF format. Make sure you have a PDF viewer installed.
 
-Hint: Type 'contact' to see my contact information or 'home' to return to the main screen.
+Hint: Type 'contact' to see my contact information.
   `,
     help: `
 Available commands:
@@ -224,9 +224,9 @@ Hint: Try exploring each section to learn more about Stanley's portfolio.
 
   return (
     <div className={`min-h-screen bg-black text-green-500 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 ${firaCode.className}`}>
-      <pre 
+      <pre
         ref={contentRef}
-        className="whitespace-pre-wrap mb-4 max-h-[80vh] overflow-y-auto" 
+        className="whitespace-pre-wrap mb-4 max-h-[80vh] overflow-y-auto"
         dangerouslySetInnerHTML={{ __html: typedContent }}
       ></pre>
       <div className="flex items-center">
