@@ -5,7 +5,7 @@ import { Fira_Code } from 'next/font/google'
 
 const firaCode = Fira_Code({ subsets: ['latin'] })
 
-// Updated ASCII art for larger screens
+// ASCII art for larger screens
 const largeScreenAsciiArt = `
  ┌───────────────────────────────────────────────────┐
  │   _____        __ _                               │
@@ -22,8 +22,8 @@ const largeScreenAsciiArt = `
 // Simplified ASCII art for mobile screens
 const smallScreenAsciiArt = `
 ┌─────────────┐
-│  Software   │
-│  Engineer   │
+│  Software    │
+│  Engineer    │
 └─────────────┘
 `
 
@@ -32,15 +32,22 @@ export default function Portfolio() {
   const [typedContent, setTypedContent] = useState('')
   const [commandHistory, setCommandHistory] = useState<string[]>([])
   const [historyIndex, setHistoryIndex] = useState(-1)
+  const [isLargeScreen, setIsLargeScreen] = useState(true)
   const inputRef = useRef<HTMLInputElement>(null)
   const contentRef = useRef<HTMLPreElement>(null)
 
+  useEffect(() => {
+    const checkScreenSize = () => {
+      setIsLargeScreen(window.innerWidth >= 640)
+    }
+    checkScreenSize()
+    window.addEventListener('resize', checkScreenSize)
+    return () => window.removeEventListener('resize', checkScreenSize)
+  }, [])
+
   const content = useMemo(() => ({
     home: `
-<div class="ascii-art-container">
-  <div class="large-screen-ascii">${largeScreenAsciiArt}</div>
-  <div class="small-screen-ascii">${smallScreenAsciiArt}</div>
-</div>
+${isLargeScreen ? largeScreenAsciiArt : smallScreenAsciiArt}
 
 Hi, I'm Stanley Mwendwa!
 Welcome to my Software Engineering Portfolio
@@ -171,7 +178,7 @@ help        - Show this help message
 
 Hint: Try exploring each section to learn more about Stanley's portfolio.
   `
-  } as Record<string, string>), []);
+  } as Record<string, string>), [isLargeScreen]);
 
   useEffect(() => {
     setTypedContent('')
@@ -238,26 +245,6 @@ Hint: Try exploring each section to learn more about Stanley's portfolio.
 
   return (
     <div className={`min-h-screen bg-black text-green-500 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 ${firaCode.className}`}>
-      <style jsx>{`
-        .ascii-art-container {
-          display: flex;
-          justify-content: center;
-        }
-        .large-screen-ascii {
-          display: none;
-        }
-        .small-screen-ascii {
-          display: block;
-        }
-        @media (min-width: 640px) {
-          .large-screen-ascii {
-            display: block;
-          }
-          .small-screen-ascii {
-            display: none;
-          }
-        }
-      `}</style>
       <pre
         ref={contentRef}
         className="whitespace-pre-wrap mb-4 max-h-[80vh] overflow-y-auto"
