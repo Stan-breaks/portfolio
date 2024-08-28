@@ -99,6 +99,7 @@ Full-Stack Applications:
    - Features: Interactive health mapping, user-driven forums, anonymous symptom reporting
    - Stack: React.ts (Frontend), Node.js (Backend), Python with Flask (USSD server), MongoDB (Database)
    - GitHub: <a href="https://github.com/Stan-breaks/crowdsource-health" target="_blank" rel="noopener noreferrer">github.com/Stan-breaks/crowdsource-health</a>
+   - Live Demo: <a href="https://crowd-source-xi.vercel.app/" target="_blank" rel="noopener noreferrer">crowdsource-health.vercel.app</a>
 
 4. Nexaplan (React, Vite, Django)
    - Project and task management system with frontend and backend implementations
