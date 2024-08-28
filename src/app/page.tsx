@@ -106,7 +106,7 @@ Backend Development:
    - Minimalistic HTTP server built from scratch
    - Supports basic HTTP methods and file operations
    - Features: root serving, echo with gzip, file storage, user-agent info
-   - GitHub: <a href="https://github.com/Stan-breaks/bare-bones-http-server" target="_blank" rel="noopener noreferrer">github.com/Stan-breaks/bare-bones-http-server</a>
+   - GitHub: <a href="https://github.com/Stan-breaks/http-server-go" target="_blank" rel="noopener noreferrer">github.com/Stan-breaks/bare-bones-http-server</a>
 
 2. Pomo - Pomodoro Technique CLI Tool (Go)
    - Command-line tool for time management using the Pomodoro Technique
@@ -119,7 +119,7 @@ Full-Stack Applications:
    - Community-driven website for aggregating and sharing health information
    - Features: Interactive health mapping, user-driven forums, anonymous symptom reporting
    - Stack: React.ts (Frontend), Node.js (Backend), Python with Flask (USSD server), MongoDB (Database)
-   - GitHub: <a href="https://github.com/Stan-breaks/crowdsource-health" target="_blank" rel="noopener noreferrer">github.com/Stan-breaks/crowdsource-health</a>
+   - GitHub: <a href="https://github.com/Stan-breaks/crowd_source" target="_blank" rel="noopener noreferrer">github.com/Stan-breaks/crowdsource-health</a>
    - Live Demo: <a href="https://crowd-source-xi.vercel.app/" target="_blank" rel="noopener noreferrer">crowdsource-health.vercel.app</a>
 
 4. Nexaplan (React, Vite, Django)
