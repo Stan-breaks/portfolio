@@ -1,113 +1,184 @@
-import Image from "next/image";
+'use client'
 
-export default function Home() {
+import { useState, useEffect, useMemo, useRef, KeyboardEvent } from 'react'
+import { Fira_Code } from 'next/font/google'
+
+const firaCode = Fira_Code({ subsets: ['latin'] })
+
+// Updated ASCII art for the home section
+const asciiArt = `
+ ┌───────────────────────────────────────────────────┐
+ │   _____        __ _                               │
+ │  / ____|      / _| |                              │
+ │ | (___   ___ | |_| |___      ____ _ _ __ ___      │
+ │  \\___ \\ / _ \\|  _| __\\ \\ /\\ / / _\` | '__/ _ \\     │
+ │  ____) | (_) | | | |_ \\ V  V / (_| | | |  __/     │
+ │ |_____/ \\___/|_|  \\__| \\_/\\_/ \\__,_|_|  \\___|     │
+ │                                                   │
+ │              E N G I N E E R                      │
+ └───────────────────────────────────────────────────┘
+`
+
+export default function Portfolio() {
+  const [currentSection, setCurrentSection] = useState<string>('home')
+  const [typedContent, setTypedContent] = useState('')
+  const [commandHistory, setCommandHistory] = useState<string[]>([])
+  const [historyIndex, setHistoryIndex] = useState(-1)
+  const inputRef = useRef<HTMLInputElement>(null)
+
+  const content = useMemo(() => ({
+    home: `${asciiArt}
+
+Welcome to Stanley's Software Engineering Portfolio
+==================================================
+
+Type 'help' to see available commands.
+    `,
+    about: `
+About Stanley
+=============
+
+I'm a passionate backend developer with 2 years of experience in building
+scalable and efficient server-side applications. With a strong foundation in
+various Linux distributions and cloud technologies, I bring a comprehensive 
+approach to software engineering. I'm also an open-source enthusiast, actively 
+contributing to the community. My expertise includes:
+
+- Designing robust APIs and optimizing database performance
+- Developing efficient CLI and server applications using Go
+- Implementing secure authentication systems
+- Containerization and orchestration with Docker and Kubernetes
+- Cloud infrastructure management, particularly with AWS services
+- Proficient in Linux environments (Arch Linux, Ubuntu) and Windows Server
+- Utilizing advanced development tools like Neovim, tmux, and LazyGit for efficient coding
+- Contributing to open-source projects and engaging with the community
+    `,
+    skills: `
+Technical Skills
+================
+
+Languages:     Python, JavaScript, TypeScript, Go, C, SQL
+Frontend:      React.js, React TS, Next.js, Tailwind CSS, Sass
+Backend:       Django, Node.js, Express, Go
+Databases:     PostgreSQL, MongoDB, Redis, SQLite
+DevOps:        Docker, Kubernetes, Git, Jenkins
+Cloud:         AWS (EC2, S3), GCP
+OS:            Linux (Arch Linux, Ubuntu), Windows Server
+Dev Tools:     Neovim, tmux, LazyGit
+Other:         RESTful APIs, Microservices Architecture, CLI Application Development
+    `,
+    projects: `
+Notable Projects
+================
+
+1. High-Load E-commerce API (Node.js, Express, MongoDB)
+   - Handled 1M+ daily requests
+   - Implemented caching layer with Redis
+   - GitHub: github.com/johndoe/ecommerce-api
+
+2. Real-time Chat System (Go, WebSockets, Redis)
+   - Supported 100k+ concurrent users
+   - Utilized Redis pub/sub for message broadcasting
+   - GitHub: github.com/johndoe/realtime-chat
+
+3. Distributed Task Queue (Python, Celery, RabbitMQ)
+   - Processed 5M+ background jobs daily
+   - Implemented retry mechanism and dead letter queues
+   - GitHub: github.com/johndoe/task-queue
+    `,
+    contact: `
+Contact Information
+===================
+
+Email:    john.doe@example.com
+GitHub:   github.com/johndoe
+LinkedIn: linkedin.com/in/johndoe
+Twitter:  @johndoe_dev
+
+Feel free to reach out for collaborations or opportunities!
+    `,
+    help: `
+Available commands:
+===================
+
+home     - Display home information
+about    - Display information about John Doe
+skills   - List technical skills
+projects - Show notable projects
+contact  - View contact information
+clear    - Clear the terminal
+help     - Show this help message
+    `
+  } as Record<string, string>), []);
+
+  useEffect(() => {
+    setTypedContent('')
+    let i = 0
+    const timer = setInterval(() => {
+      if (i <= content[currentSection].length) {
+        setTypedContent((prev) => content[currentSection].slice(0, i))
+        i++
+      } else {
+        clearInterval(timer)
+      }
+    }, 10)
+    return () => clearInterval(timer)
+  }, [currentSection, content])
+
+  const handleCommand = (e: KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === 'Enter') {
+      const command = e.currentTarget.value.trim().toLowerCase()
+      if (content[command]) {
+        setCurrentSection(command)
+      } else if (command === 'clear') {
+        setTypedContent('')
+      } else {
+        setTypedContent((prev) => prev + `\n\nUnknown command: ${command}\nType 'help' for available commands.\n\n`)
+      }
+      setCommandHistory((prev) => [...prev, command])
+      setHistoryIndex(-1)
+      e.currentTarget.value = ''
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault()
+      if (historyIndex < commandHistory.length - 1) {
+        setHistoryIndex((prev) => prev + 1)
+        e.currentTarget.value = commandHistory[commandHistory.length - 1 - historyIndex - 1]
+      }
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault()
+      if (historyIndex > -1) {
+        setHistoryIndex((prev) => prev - 1)
+        e.currentTarget.value = historyIndex === 0 ? '' : commandHistory[commandHistory.length - 1 - historyIndex + 1]
+      }
+    }
+  }
+
+  // Simple ASCII-based animation
+  useEffect(() => {
+    const frames = ['|', '/', '-', '\\']
+    let frameIndex = 0
+    const animationTimer = setInterval(() => {
+      setTypedContent((prev) => prev.replace(/[|/-\\]$/, frames[frameIndex]))
+      frameIndex = (frameIndex + 1) % frames.length
+    }, 250)
+
+    return () => clearInterval(animationTimer)
+  }, [])
+
   return (
-    <main className="flex min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 w-full max-w-5xl items-center justify-between font-mono text-sm lg:flex">
-        <p className="fixed left-0 top-0 flex w-full justify-center border-b border-gray-300 bg-gradient-to-b from-zinc-200 pb-6 pt-8 backdrop-blur-2xl dark:border-neutral-800 dark:bg-zinc-800/30 dark:from-inherit lg:static lg:w-auto  lg:rounded-xl lg:border lg:bg-gray-200 lg:p-4 lg:dark:bg-zinc-800/30">
-          Get started by editing&nbsp;
-          <code className="font-mono font-bold">src/app/page.tsx</code>
-        </p>
-        <div className="fixed bottom-0 left-0 flex h-48 w-full items-end justify-center bg-gradient-to-t from-white via-white dark:from-black dark:via-black lg:static lg:size-auto lg:bg-none">
-          <a
-            className="pointer-events-none flex place-items-center gap-2 p-8 lg:pointer-events-auto lg:p-0"
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className="dark:invert"
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
-
-      <div className="relative z-[-1] flex place-items-center before:absolute before:h-[300px] before:w-full before:-translate-x-1/2 before:rounded-full before:bg-gradient-radial before:from-white before:to-transparent before:blur-2xl before:content-[''] after:absolute after:-z-20 after:h-[180px] after:w-full after:translate-x-1/3 after:bg-gradient-conic after:from-sky-200 after:via-blue-200 after:blur-2xl after:content-[''] before:dark:bg-gradient-to-br before:dark:from-transparent before:dark:to-blue-700 before:dark:opacity-10 after:dark:from-sky-900 after:dark:via-[#0141ff] after:dark:opacity-40 sm:before:w-[480px] sm:after:w-[240px] before:lg:h-[360px]">
-        <Image
-          className="relative dark:drop-shadow-[0_0_0.3rem_#ffffff70] dark:invert"
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+    <div className={`min-h-screen bg-black text-green-500 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 ${firaCode.className}`}>
+      <pre className="whitespace-pre-wrap mb-4">{typedContent}</pre>
+      <div className="flex items-center">
+        <span className="mr-2">$</span>
+        <input
+          ref={inputRef}
+          type="text"
+          className="bg-transparent border-none outline-none flex-grow text-green-500"
+          onKeyDown={handleCommand}
+          autoFocus
+          aria-label="Command input"
         />
       </div>
-
-      <div className="mb-32 grid text-center lg:mb-0 lg:w-full lg:max-w-5xl lg:grid-cols-4 lg:text-left">
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Docs{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Find in-depth information about Next.js features and API.
-          </p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Learn{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Learn about Next.js in an interactive course with&nbsp;quizzes!
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Templates{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-sm opacity-50">
-            Explore starter templates for Next.js.
-          </p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className="group rounded-lg border border-transparent px-5 py-4 transition-colors hover:border-gray-300 hover:bg-gray-100 hover:dark:border-neutral-700 hover:dark:bg-neutral-800/30"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2 className="mb-3 text-2xl font-semibold">
-            Deploy{" "}
-            <span className="inline-block transition-transform group-hover:translate-x-1 motion-reduce:transform-none">
-              -&gt;
-            </span>
-          </h2>
-          <p className="m-0 max-w-[30ch] text-balance text-sm opacity-50">
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
-  );
+    </div>
+  )
 }
