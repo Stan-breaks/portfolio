@@ -36,7 +36,9 @@ Welcome to my Software Engineering Portfolio
 
 Type 'help' to see available commands.
 
-Hint: All links in this portfolio are clickable.
+Note: All links in this portfolio are clickable.
+
+Hint: Type 'about' to know about me. 
   `,
     about: `
 About Me
