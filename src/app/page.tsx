@@ -1,9 +1,9 @@
-'use client'
+"use client";
 
-import { useState, useEffect, useMemo, useRef, KeyboardEvent } from 'react'
-import { Fira_Code } from 'next/font/google'
+import { useState, useEffect, useMemo, useRef, KeyboardEvent } from "react";
+import { Fira_Code } from "next/font/google";
 
-const firaCode = Fira_Code({ subsets: ['latin'] })
+const firaCode = Fira_Code({ subsets: ["latin"] });
 
 // ASCII art for larger screens
 const largeScreenAsciiArt = `
@@ -17,7 +17,7 @@ const largeScreenAsciiArt = `
  │                                                   │
  │              E N G I N E E R                      │
  └───────────────────────────────────────────────────┘
-`
+`;
 
 // Simplified ASCII art for mobile screens
 const smallScreenAsciiArt = `
@@ -25,28 +25,30 @@ const smallScreenAsciiArt = `
 │  Software     │
 │  Engineer     │
 └─────────────┘
-`
+`;
 
 export default function Portfolio() {
-  const [currentSection, setCurrentSection] = useState<string>('home')
-  const [typedContent, setTypedContent] = useState('')
-  const [commandHistory, setCommandHistory] = useState<string[]>([])
-  const [historyIndex, setHistoryIndex] = useState(-1)
-  const [isLargeScreen, setIsLargeScreen] = useState(true)
-  const inputRef = useRef<HTMLInputElement>(null)
-  const contentRef = useRef<HTMLPreElement>(null)
+  const [currentSection, setCurrentSection] = useState<string>("home");
+  const [typedContent, setTypedContent] = useState("");
+  const [commandHistory, setCommandHistory] = useState<string[]>([]);
+  const [historyIndex, setHistoryIndex] = useState(-1);
+  const [isLargeScreen, setIsLargeScreen] = useState(true);
+  const inputRef = useRef<HTMLInputElement>(null);
+  const contentRef = useRef<HTMLPreElement>(null);
 
   useEffect(() => {
     const checkScreenSize = () => {
-      setIsLargeScreen(window.innerWidth >= 640)
-    }
-    checkScreenSize()
-    window.addEventListener('resize', checkScreenSize)
-    return () => window.removeEventListener('resize', checkScreenSize)
-  }, [])
+      setIsLargeScreen(window.innerWidth >= 640);
+    };
+    checkScreenSize();
+    window.addEventListener("resize", checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
+  }, []);
 
-  const content = useMemo(() => ({
-    home: `
+  const content = useMemo(
+    () =>
+      ({
+        home: `
 ${isLargeScreen ? largeScreenAsciiArt : smallScreenAsciiArt}
 
 Hi, I'm Stanley Mwendwa!
@@ -59,7 +61,7 @@ Note: All links in this portfolio are clickable.
 
 Hint: Type 'about' to know about me. 
   `,
-    about: `
+        about: `
 About Me
 ========
 
@@ -80,7 +82,7 @@ contributing to the community. My expertise includes:
 
 Hint: Type 'skills' to see my technical skills.
   `,
-    skills: `
+        skills: `
 Technical Skills
 ================
 
@@ -96,7 +98,7 @@ Other:         RESTful APIs, Microservices Architecture, CLI Application Develop
 
 Hint: Type 'projects' to view my portfolio projects.
   `,
-    projects: `
+        projects: `
 Projects
 ========
 
@@ -139,7 +141,7 @@ Customization:
 
 Hint: Type 'resume' to view my resume.
   `,
-    contact: `
+        contact: `
 Contact Information
 ===================
 
@@ -151,19 +153,19 @@ Feel free to reach out for collaborations or opportunities!
 
 Hint: Type 'home' to return to the main screen.
   `,
-    resume: `
+        resume: `
 Resume
 ======
 
 You can download my resume to learn more about my professional experience and qualifications.
 
-Download: <a href="https://drive.google.com/file/d/1PmcFf7lMuymixuATfSLhKoM-ysEKGZ_K/view?usp=sharing" target="_blank" rel="noopener noreferrer" download>Stanley_Mwendwa_Resume.pdf</a>
+Download: <a href="https://drive.google.com/file/d/14dfjrCjcbN2k4ORlif6U_la8NrQDElK-/view?usp=sharing" download>Stanley_Mwendwa_Resume.pdf</a>
 
 Note: The resume is in PDF format. Make sure you have a PDF viewer installed.
 
 Hint: Type 'contact' to see my contact information.
   `,
-    help: `
+        help: `
 Available commands:
 ===================
 
@@ -177,74 +179,86 @@ clear       - Clear the terminal
 help        - Show this help message
 
 Hint: Try exploring each section to learn more about Stanley's portfolio.
-  `
-  } as Record<string, string>), [isLargeScreen]);
+  `,
+      }) as Record<string, string>,
+    [isLargeScreen],
+  );
 
   useEffect(() => {
-    setTypedContent('')
-    let i = 0
+    setTypedContent("");
+    let i = 0;
     const timer = setInterval(() => {
       if (i <= content[currentSection].length) {
         setTypedContent((prev) => {
-          const newContent = content[currentSection].slice(0, i)
+          const newContent = content[currentSection].slice(0, i);
           // Scroll to the bottom after each update
           setTimeout(() => {
             if (contentRef.current) {
-              contentRef.current.scrollTop = contentRef.current.scrollHeight
+              contentRef.current.scrollTop = contentRef.current.scrollHeight;
             }
-          }, 0)
-          return newContent
-        })
-        i++
+          }, 0);
+          return newContent;
+        });
+        i++;
       } else {
-        clearInterval(timer)
+        clearInterval(timer);
       }
-    }, 10)
-    return () => clearInterval(timer)
-  }, [currentSection, content])
+    }, 10);
+    return () => clearInterval(timer);
+  }, [currentSection, content]);
 
   const handleCommand = (e: KeyboardEvent<HTMLInputElement>) => {
-    if (e.key === 'Enter') {
-      const command = e.currentTarget.value.trim().toLowerCase()
+    if (e.key === "Enter") {
+      const command = e.currentTarget.value.trim().toLowerCase();
       if (content[command]) {
-        setCurrentSection(command)
-      } else if (command === 'clear') {
-        setTypedContent('')
+        setCurrentSection(command);
+      } else if (command === "clear") {
+        setTypedContent("");
       } else {
-        setTypedContent((prev) => prev + `\n\nUnknown command: ${command}\nType 'help' for available commands.\n\n`)
+        setTypedContent(
+          (prev) =>
+            prev +
+            `\n\nUnknown command: ${command}\nType 'help' for available commands.\n\n`,
+        );
       }
-      setCommandHistory((prev) => [...prev, command])
-      setHistoryIndex(-1)
-      e.currentTarget.value = ''
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault()
+      setCommandHistory((prev) => [...prev, command]);
+      setHistoryIndex(-1);
+      e.currentTarget.value = "";
+    } else if (e.key === "ArrowUp") {
+      e.preventDefault();
       if (historyIndex < commandHistory.length - 1) {
-        setHistoryIndex((prev) => prev + 1)
-        e.currentTarget.value = commandHistory[commandHistory.length - 1 - historyIndex - 1]
+        setHistoryIndex((prev) => prev + 1);
+        e.currentTarget.value =
+          commandHistory[commandHistory.length - 1 - historyIndex - 1];
       }
-    } else if (e.key === 'ArrowDown') {
-      e.preventDefault()
+    } else if (e.key === "ArrowDown") {
+      e.preventDefault();
       if (historyIndex > -1) {
-        setHistoryIndex((prev) => prev - 1)
-        e.currentTarget.value = historyIndex === 0 ? '' : commandHistory[commandHistory.length - 1 - historyIndex + 1]
+        setHistoryIndex((prev) => prev - 1);
+        e.currentTarget.value =
+          historyIndex === 0
+            ? ""
+            : commandHistory[commandHistory.length - 1 - historyIndex + 1];
       }
     }
-  }
+  };
 
   // Simple ASCII-based animation
   useEffect(() => {
-    const frames = ['|', '/', '-', '\\']
-    let frameIndex = 0
+    const frames = ["|", "/", "-", "\\"];
+    let frameIndex = 0;
     const animationTimer = setInterval(() => {
-      setTypedContent((prev) => prev.replace(/[|/-\\]$/, frames[frameIndex]))
-      frameIndex = (frameIndex + 1) % frames.length
-    }, 250)
+      setTypedContent((prev) => prev.replace(/[|/-\\]$/, frames[frameIndex]));
+      frameIndex = (frameIndex + 1) % frames.length;
+    }, 250);
 
-    return () => clearInterval(animationTimer)
-  }, [])
+    return () => clearInterval(animationTimer);
+  }, []);
 
   return (
-    <div className={`min-h-screen bg-black text-green-500 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 ${firaCode.className}`}>
+    <div
+      className={`min-h-screen bg-black text-green-500 p-4 sm:p-6 md:p-8 lg:p-10 xl:p-12 ${firaCode.className}`}
+    >
       <pre
         ref={contentRef}
         className="whitespace-pre-wrap mb-4 max-h-[80vh] overflow-y-auto"
@@ -262,5 +276,5 @@ Hint: Try exploring each section to learn more about Stanley's portfolio.
         />
       </div>
     </div>
-  )
+  );
 }
