@@ -159,7 +159,7 @@ Resume
 
 You can download my resume to learn more about my professional experience and qualifications.
 
-Download: <a href="https://drive.google.com/file/d/1468SeknYQbAXQCiL7mPB3kl_ENfivknb/view?usp=sharing" download>Stanley_Mwendwa_Resume.pdf</a>
+Download: <a href="https://drive.google.com/file/d/17tgsCj5-284rltrlfjqF4DgOWjEVEytu/view?usp=sharing" download>Stanley_Mwendwa_Resume.pdf</a>
 
 Note: The resume is in PDF format. Make sure you have a PDF viewer installed.
 
